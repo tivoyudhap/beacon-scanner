@@ -9,9 +9,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import org.altbeacon.beacon.BeaconManager
-import org.altbeacon.beacon.BeaconParser
-import org.altbeacon.beacon.Region
+import org.altbeacon.beacon.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -27,6 +25,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         requestPermission()
+
+        val beacon = Beacon.Builder()
+            .setId1("2f234454-cf6d-4a0f-adf2-f4911ba9ffa6")
+            .setId2("1")
+            .setId3("2")
+            .setManufacturer(0x004c)
+            .setTxPower(-59)
+            .build()
+        val beaconParser = BeaconParser()
+            .setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24")
+
+        val beaconTransmitter = BeaconTransmitter(this, beaconParser)
+        beaconTransmitter.setBeacon(beacon)
 
         val beaconManager: BeaconManager = BeaconManager.getInstanceForApplication(this)
         val region = Region("all-beacons-region", null, null, null)
